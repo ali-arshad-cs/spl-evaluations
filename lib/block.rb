@@ -157,6 +157,8 @@ class Block
       [trim_from(other.bottom)]
     elsif intersects_top?(other)
       [trim_to(other.top)]
+    elsif !overlaps?(other)
+      [self]
     end
   end
 

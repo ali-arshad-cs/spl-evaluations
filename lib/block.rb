@@ -155,6 +155,8 @@ class Block
       []
     elsif intersects_bottom?(other)
       [trim_from(other.bottom)]
+    elsif intersects_top?(other)
+      [trim_to(other.top)]
     end
   end
 

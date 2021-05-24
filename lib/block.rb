@@ -16,6 +16,7 @@
 #   Block.new(5, 25) - Block.new(10, 20) == [Block.new(5, 10), Block.new(20, 25)]
 #
 class Block
+  include Comparable
 
   def initialize (from, to)
     if to < from

@@ -153,6 +153,8 @@ class Block
       split(other)
     elsif other.covers?(self)
       []
+    elsif intersects_bottom?(other)
+      [trim_from(other.bottom)]
     end
   end
 

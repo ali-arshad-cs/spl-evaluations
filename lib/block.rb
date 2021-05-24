@@ -149,7 +149,11 @@ class Block
   # Return the result of subtracting the other Block (or Blocks) from self.
 
   def subtract (other)
-    split(other) if surrounds?(other)
+    if surrounds?(other)
+      split(other)
+    elsif other.covers?(self)
+      []
+    end
   end
 
   alias :- :subtract

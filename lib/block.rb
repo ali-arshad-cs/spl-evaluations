@@ -141,6 +141,8 @@ class Block
       [other]
     elsif overlaps?(other)
       [union(other)]
+    else
+      other < self ? [other, self] : [self, other]
     end
   end
   

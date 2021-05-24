@@ -134,7 +134,13 @@ class Block
   # Return the result of adding the other Block (or Blocks) to self.
 
   def add (other)
-    [self] if surrounds?(other)
+    if surrounds?(other)
+      [self]
+    elsif other.surrounds?(self)
+      [other]
+    elsif overlaps?(other)
+      [union(other)]
+    end
   end
   
   # Return the result of subtracting the other Block (or Blocks) from self.

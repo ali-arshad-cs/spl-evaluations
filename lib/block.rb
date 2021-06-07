@@ -16,6 +16,7 @@
 #   Block.new(5, 25) - Block.new(10, 20) == [Block.new(5, 10), Block.new(20, 25)]
 #
 class Block
+  include Comparable
 
   def initialize (from, to)
     if to < from
@@ -134,13 +135,43 @@ class Block
   # Return the result of adding the other Block (or Blocks) to self.
 
   def add (other)
-    # Implement.
+    if surrounds?(other)
+      [self]
+    elsif other.surrounds?(self)
+      [other]
+    elsif overlaps?(other)
+      [union(other)]
+    else
+      other < self ? [other, self] : [self, other]
+    end
   end
   
   # Return the result of subtracting the other Block (or Blocks) from self.
 
   def subtract (other)
-    # Implement.
+    if other.is_a? Array
+      split_collection(other)
+    else
+      if surrounds?(other)
+        split(other)
+      elsif other.covers?(self)
+        []
+      elsif intersects_bottom?(other)
+        [trim_from(other.bottom)]
+      elsif intersects_top?(other)
+        [trim_to(other.top)]
+      elsif !overlaps?(other)
+        [self]
+      end
+    end
+  end
+
+  def split_collection(blocks)
+    blocks.sort_by(&:top).inject([self]) do |blocks, b|
+      if blocks.last.overlaps?(b)
+        blocks[0...-1] + (blocks.last - b)
+      end
+    end
   end
 
   alias :- :subtract
@@ -161,5 +192,6 @@ class Block
 
   def merge (others)
     # Implement.
+    Block.merge(others << self)
   end
 end
